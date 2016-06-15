@@ -1,0 +1,39 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/denbilyk/altaris-server.git"
+  },
+  "name": "elecdb",
+  "version": "0.0.1",
+  "dependencies": {
+    "object-assign": "*",
+    "flux": "^2.0.1",
+    "superagent": "*",
+    "react": "15.1.0",
+    "react-router": "^2.4.1",
+    "react-dom": "^15.1.0",
+    "muicss": "^0.6.0",
+    "papaparse": "~4.1.2",
+    "react-notification-system": "^0.2.7"
+  },
+  "devDependencies": {
+    "url-loader": "*",
+    "file-loader": "*",
+    "postcss-loader": "*",
+    "babel-loader": "*",
+    "babel-core": "*",
+    "babel-preset-react":"*",
+    "babel-preset-es2015":"*",
+    "css-loader": "*",
+    "extract-text-webpack-plugin": "*",
+    "html-webpack-plugin":"*",
+    "express": "*",
+    "stylus":"*",
+    "stylus-loader": "*",
+    "style-loader": "*",
+    "webpack": "*",
+    "webpack-dev-server": "*",
+
+    "rimraf": "*"
+  }
+}

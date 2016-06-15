@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>elecdb</artifactId>
+        <groupId>net.homenet</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>elecdb-ui</artifactId>
+    <packaging>war</packaging>
+
+
+    <build>
+        <finalName>elecdb</finalName>
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-webpack</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>webpack</executable>
+                            <arguments>
+                                <argument>--timeout=10000</argument>
+                                <argument>--host=http://localhost:8080</argument>
+                                <argument>--app=${project.build.finalName}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>target</directory>
+                            <targetPath>/</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>prepare-war</id>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                        <plugin>
+                            <groupId>com.github.eirslett</groupId>
+                            <artifactId>frontend-maven-plugin</artifactId>
+                            <version>1.0</version>
+
+                            <configuration>
+                                <nodeVersion>v0.12.7</nodeVersion>
+                                <npmVersion>2.14.1</npmVersion>
+                            </configuration>
+
+                            <executions>
+                                <execution>
+                                    <id>install_node_and_npm</id>
+                                    <goals>
+                                        <goal>install-node-and-npm</goal>
+                                    </goals>
+                                </execution>
+
+                                <execution>
+                                    <id>npm install</id>
+                                    <goals>
+                                        <goal>npm</goal>
+                                    </goals>
+
+                                    <configuration>
+                                        <arguments>install</arguments>
+                                    </configuration>
+                                </execution>
+
+
+                                <execution>
+                                    <id>gulp build</id>
+                                    <goals>
+                                        <goal>gulp</goal>
+                                    </goals>
+                                    <phase>generate-resources</phase>
+
+                                    <configuration>
+                                        <arguments>build</arguments>
+                                    </configuration>
+                                </execution>
+
+                            </executions>
+                        </plugin>
+                        -->
+        </plugins>
+    </build>
+
+
+</project>

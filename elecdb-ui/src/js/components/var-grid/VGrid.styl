@@ -1,0 +1,55 @@
+.filter-container {
+  position: absolute;
+  top: 70px;
+}
+
+.filter-panel {
+  height: 47px;
+  width: 130px;
+  overflow: hidden;
+  transition: all 0.5s ease-out 0.5s;
+  &:hover {
+    overflow: visible;
+    height: auto;
+    z-index: 1;
+  }
+}
+.vgrid-container {
+  margin-top: 60px;
+  //border: red 1px solid;
+}
+
+.row-header {
+  background: #ccc;
+}
+
+.row-odd {
+  background: #eee;
+}
+
+.row-divider {
+  border-right: #ddd 1px solid;
+}
+
+.btn-edit {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 16px !important;
+  border-radius: 26% !important;
+  display: none !important;
+  margin-right: 2px !important;
+}
+
+.data-col {
+  height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  &:hover {
+    .btn-edit {
+      display: block !important;
+    }
+  }
+}
