@@ -1,0 +1,28 @@
+.filter-container {
+  position: absolute;
+  top: 70px;
+}
+
+.filter-panel {
+  max-height: 47px;
+  height: 47px;
+  width: 100px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  &:hover {
+    height: auto;
+    max-height: 700px;
+    width: 420px;
+    z-index: 1;
+  }
+
+  .mui-checkbox {
+    float: left;
+    text-align: left;
+    width: 130px;
+  }
+}
+
+.clear {
+  clear: both;
+}

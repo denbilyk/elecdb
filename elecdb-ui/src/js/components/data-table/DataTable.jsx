@@ -5,7 +5,7 @@ import {render} from "react-dom";
 import Appbar from "muicss/lib/react/appbar";
 import Button from "muicss/lib/react/button";
 import Container from "muicss/lib/react/container";
-import VGrid from "../var-grid/VGrid.react.jsx";
+import VGrid from "../var-grid/VGrid.react";
 import EntryStore from "../../store/EntryStore";
 import Popup from "../popup/Popup.react";
 import DataTableApi from "../../actions/DataTableApi";
@@ -27,7 +27,6 @@ export default class DataTable extends React.Component {
     }
 
     componentDidMount() {
-        console.log("DataTable mount");
         this.popupSystem = this.refs.popup;
     }
 

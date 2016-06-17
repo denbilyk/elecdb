@@ -20,6 +20,8 @@ export default class GridFilter extends React.Component {
             symbol: true,
             footprint: true,
         };
+
+        this.vgrid = this.props.table;
     }
 
     componentDidMount() {
@@ -32,12 +34,13 @@ export default class GridFilter extends React.Component {
     }
 
     applyFilter() {
-        AppDispatcher.dispatch(AppDispatcher.KEYS.UPDATE_FILTER, this.filterParams);
+        //AppDispatcher.dispatch(AppDispatcher.KEYS.UPDATE_FILTER, this.filterParams);
     }
     
     
 
     inputChanged(e) {
+        this.vgrid.inputChanged(e);
         switch (e.target.name) {
             case "part":
                 this.filterParams.part = e.target.checked;

@@ -1,39 +1,64 @@
-.filter-container {
-  position: absolute;
-  top: 70px;
-}
 
-.filter-panel {
-  height: 47px;
-  width: 130px;
-  overflow: hidden;
-  transition: all 0.5s ease-out 0.5s;
-  &:hover {
-    overflow: visible;
-    height: auto;
-    z-index: 1;
-  }
-}
 .vgrid-container {
   margin-top: 60px;
-  //border: red 1px solid;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  table {
+    font-family: Arial, Verdana, Tahoma;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.429;
+    color: rgba(0, 0, 0, 0.87);
+    max-width: 0;
+  }
 }
 
-.row-header {
-  background: #ccc;
-}
+#data-table {
+  thead {
+    th {
+      white-space: nowrap;
+    }
+  }
 
-.row-odd {
-  background: #eee;
-}
+  .row-header {
+    background: #ccc;
+  }
+  .col-header {
+    font-weight: 400;
+    padding: 2px 50px 2px 15px;
+  }
 
-.row-divider {
-  border-right: #ddd 1px solid;
+  .row-odd {
+    background: #eee;
+  }
+
+  .row-divider {
+    border-right: #ddd 1px solid;
+  }
+
+  .data-col {
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 2px 2px;
+    &:hover {
+      .btn-edit {
+        display: block !important;
+      }
+    }
+    span {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
 }
 
 .btn-edit {
-  margin-top: 2px !important;
-  margin-bottom: 2px !important;
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
   width: 16px !important;
   height: 16px !important;
   line-height: 16px !important;
@@ -42,14 +67,3 @@
   margin-right: 2px !important;
 }
 
-.data-col {
-  height: 20px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  &:hover {
-    .btn-edit {
-      display: block !important;
-    }
-  }
-}

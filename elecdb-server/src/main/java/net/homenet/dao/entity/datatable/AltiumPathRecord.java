@@ -3,6 +3,8 @@ package net.homenet.dao.entity.datatable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import net.homenet.dao.entity.DomainObject;
+import net.homenet.service.dto.datatable.NonHeader;
 
 import javax.persistence.*;
 
@@ -15,15 +17,17 @@ import javax.persistence.*;
 })
 @Entity
 @Table(name = "library_path")
-public class AltiumPathRecord {
+public class AltiumPathRecord implements DomainObject{
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
+    @NonHeader
     private Long id;
 
+    @NonHeader
     @Setter
     @Getter
     @OneToOne

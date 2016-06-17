@@ -4,7 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.homenet.dao.util.OperationResult;
 import net.homenet.service.CategoryService;
 import net.homenet.service.DataTableService;
-import net.homenet.service.dto.ListDefaults;
+import net.homenet.service.dto.datatable.DataCol;
+import net.homenet.service.dto.datatable.HeaderDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author denbilyk
@@ -38,9 +40,15 @@ public class DataTableRestController {
     @CrossOrigin(origins = "http://localhost:9001")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Collection<ListDefaults> list() {
-        return dataTableService.listDefault();
+    public Collection<List<DataCol>> list() {
+        return dataTableService.listDefault(1);
+    }
 
+    @CrossOrigin(origins = "http://localhost:9001")
+    @RequestMapping(value = "/header", method = RequestMethod.GET)
+    @ResponseBody
+    public Collection<HeaderDto> header() {
+        return dataTableService.header();
     }
 
     @CrossOrigin(origins = "*")

@@ -17,3 +17,5 @@ target/
 node/
 node_modules/
 .mvm/
+*.ser
+actions.sql

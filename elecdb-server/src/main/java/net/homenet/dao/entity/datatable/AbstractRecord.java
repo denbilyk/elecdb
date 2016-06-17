@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.homenet.dao.entity.DomainObject;
+import net.homenet.service.dto.datatable.NonHeader;
 
 import javax.persistence.*;
 
@@ -38,6 +39,7 @@ public abstract class AbstractRecord implements DomainObject {
     @Setter
     private String footprint;
 
+    @NonHeader
     @Getter
     @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "abstractRecord")

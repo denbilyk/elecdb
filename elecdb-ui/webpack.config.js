@@ -53,7 +53,8 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['', '.js', '.jsx', '.styl']
+        extensions: ['', '.js', '.jsx', '.styl'],
+        modulesDirectories: ["lib", "node_modules"]
     },
 
     module: {
@@ -102,7 +103,8 @@ module.exports = {
         },
         new ExtractTextPlugin(mode('style.css?hash=[hash:6]', '[hash].css')),
         new webpack.ProvidePlugin({
-            $: "jquery"
+            $: "jquery",
+            jQuery: "jquery"
         }),
         HTMLWebpackPluginConfig,
         new webpack.DefinePlugin(

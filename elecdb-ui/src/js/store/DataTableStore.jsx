@@ -14,8 +14,20 @@ class DataTableStore extends EventEmitter {
         return this.data;
     }
 
+    getHeader() {
+        return this.header;
+    }
+
     getCategories() {
         return this.categories;
+    }
+
+    addHeaderReloadListener(callback) {
+        this.on(AppDispatcher.EVENTS.HEADER_LOAD, callback);
+    }
+
+    removeHeaderReloadListener(callback) {
+        this.removeListener(AppDispatcher.EVENTS.HEADER_LOAD, callback);
     }
 
     addDataReloadListener(callback) {
@@ -38,7 +50,17 @@ class DataTableStore extends EventEmitter {
 
 var store = new DataTableStore();
 DataTableStore.tokens = {};
-let token = AppDispatcher.register(AppDispatcher.KEYS.DATA_REQUEST, (resp) => {
+
+let token = AppDispatcher.register(AppDispatcher.KEYS.HEADER_REQUEST, (resp) => {
+    if (helper.processErrors(resp)) {
+        store.header = resp.data;
+        store.emit(AppDispatcher.EVENTS.HEADER_LOAD);
+    }
+    return true;
+});
+DataTableStore.tokens.header = token;
+
+token = AppDispatcher.register(AppDispatcher.KEYS.DATA_REQUEST, (resp) => {
     if (helper.processErrors(resp)) {
         store.data = resp.data;
         store.emit(AppDispatcher.EVENTS.DATA_LOAD);

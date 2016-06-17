@@ -1,94 +1,98 @@
 import React from "react";
 import "./VGrid.styl";
 import tpl from "./VGrid.jsx";
-import DataTableApi from "../../actions/DataTableApi.jsx";
-import DataTableStore from "../../store/DataTableStore.jsx";
+import DataTableApi from "../../actions/DataTableApi";
+import DataTableStore from "../../store/DataTableStore";
+import "colResizable-1.6";
+
 
 export default class VGrid extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.items = {};
+        this.items.header = [];
         this.items.rows = [];
-        this.items.filter = {
-            part: true,
-            category: true,
-            description: true,
-            properties: true,
-            quantity: true,
-            symbol: true,
-            footprint: true,
-        };
     }
 
     componentDidMount() {
-        console.log("VGrid mount");
-        DataTableApi.getTableData();
+        DataTableApi.getTableHeader();
     }
 
     componentWillMount() {
-        this.reloadDataListener = this.reloadData.bind(this);
-        DataTableStore.addDataReloadListener(this.reloadDataListener);
+        this.loadHeaderListener = this.headerReload.bind(this);
+        this.loadDataListener = this.reloadData.bind(this);
+        DataTableStore.addHeaderReloadListener(this.loadHeaderListener);
+        DataTableStore.addDataReloadListener(this.loadDataListener);
 
     }
 
     componentWillUnmount() {
-        DataTableStore.removeDataReloadListener(this.reloadDataListener);
+        DataTableStore.removeHeaderReloadListener(this.loadHeaderListener);
+        DataTableStore.removeDataReloadListener(this.loadDataListener);
     }
 
-    reloadData() {
-        var data = DataTableStore.getData();
-        this.items.rows = data;
-        this.updateItems(data);
-    }
-
-    onEdit() {
-        console.log("onEdit");
-    }
-
-    updateItems(items) {
-        this.setState({
-            table: items
+    addTableResizer() {
+        $(function () {
+            $("#data-table").colResizable({
+                liveDrag: true,
+                resizeMode: 'overflow',
+                draggingClass: "dragging",
+            });
         });
     }
 
-    inputChanged(e) {
-        switch (e.target.name) {
-            case "part":
-                this.items.filter.part = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "category":
-                this.items.filter.category = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "description":
-                this.items.filter.description = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "properties":
-                this.items.filter.properties = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "quantity":
-                this.items.filter.quantity = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "symbol":
-                this.items.filter.symbol = e.target.checked;
-                this.updateItems(this.items);
-                break;
-            case "footprint":
-                this.items.filter.footprint = e.target.checked;
-                this.updateItems(this.items);
-                break;
+
+    headerReload() {
+        var table = DataTableStore.getHeader();
+        try {
+            this.items.header = table;    //[{id: '', name:'', show: ''}]
+            this.items.header.sort((a, b) => {
+                return a.id > b.id ? 1 : a.id == b.id ? 0 : -1;
+            });
+            this.setState({header: this.items.header});
+        } catch (Error) {
+            console.error("VGrid Reload Error!", Error);
+            return true;
+        }
+        DataTableApi.getTableData();
+    }
+
+
+    reloadData() {
+        var table = DataTableStore.getData();
+        try {
+            this.items.rows = table; //[[{header_id:'', value: ''},{},{}],[]]
+            this.items.rows.map(row => {
+                row.sort((a, b) => {
+                    return a.header_id > b.header_id ? 1 : a.header_id == b.header_id ? 0 : -1;
+                })
+            });
+            this.setState({data: this.items.rows});
+            //this.addTableResizer();
+        } catch (Error) {
+            console.error("VGrid Reload Error!", Error);
+            return true;
         }
     }
 
+    isHeaderShown(id) {
+        return this.items.header.find((curr) => {
+            return curr.id == id;
+        }).show;
+    }
+
+
+    applyColumnFilter(id, state) {
+        let hed_id = parseInt(id.substring(id.lastIndexOf('-') + 1));
+        var obj = this.items.header.find(curr => {
+            return curr.id == hed_id;
+        });
+        obj.show = state;
+        this.setState({header: this.items.header});
+    }
 
     render() {
         return tpl(this);
     }
-
 }

@@ -22,7 +22,6 @@ export default class Import extends React.Component {
         ];
         this.entries = {};
         this.response = {};
-        console.log("import page reload");
     }
 
     componentWillMount() {
@@ -116,7 +115,6 @@ export default class Import extends React.Component {
             }
             toImport.push(this.fillDto(header, entry));
         });
-        console.log(toImport);
         DataTableApi.import({items: toImport});
     }
 

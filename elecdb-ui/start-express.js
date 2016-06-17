@@ -11,6 +11,11 @@ module.exports = function setupExpress() {
         response.json(dataTable);
     });
 
+    app.get('/header', function (request, response) {
+        console.log("got header table");
+        response.json(table);
+    });
+
     var server = app.listen(4001, function () {
         var host = server.address().address;
         var port = server.address().port;
@@ -18,39 +23,56 @@ module.exports = function setupExpress() {
 
     });
 
-    dataTable = {
-        rows: [
-            {
-                part: "aaa",
-                category: "active",
-                description: "descr",
-                properties: "props",
-                quantity: 10,
-                symbol: "nmos",
-                footprint: "to-220"
-            },
-            {
-                part: "bbb",
-                category: "conn",
-                description: "descr2",
-                properties: "props",
-                quantity: 5,
-                symbol: "nmos",
-                footprint: "to-220-a"
-            },
 
+    table = {
+        header: [
             {
-                part: "ccc",
-                category: "ics",
-                description: "descr3",
-                properties: "props",
-                quantity: 15,
-                symbol: "nmos",
-                footprint: "to-220-a"
+                id: 1,
+                name: "Part Number",
+                show: true
             },
+            {
+                id: 2,
+                name: "Category",
+                show: true
+            },
+            {
+                id: 3,
+                name: "Library Ref",
+                show: false
+            }
+        ],
+        rows: [
+            [
+                {
+                    value: "74HCT04",
+                    header_id: 1
+                },
+                {
+                    value: "ICs",
+                    header_id: 2
+                },
+                {
+                    value: "sch/ICs.schLib",
+                    header_id: 3
+                }
+            ],
+            [
+                {
+                    value: "74HCT393",
+                    header_id: 1
+                },
+                {
+                    value: "ICs",
+                    header_id: 2
+                },
+                {
+                    value: "sch/ICs.schLib",
+                    header_id: 3
+                }
+            ]
         ]
     };
-
 };
 
 function allowCrossDomain(req, res, next) {

@@ -13,7 +13,6 @@ class DataTableApi extends BaseApi {
         let key = AppDispatcher.KEYS.IMPORT;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.post(url, data).timeout(10000).end(this.processResponse(key));
-        console.log(key);
     }
 
 
@@ -22,7 +21,6 @@ class DataTableApi extends BaseApi {
         let key = AppDispatcher.KEYS.NEW_ENTRY;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.post(url, data).timeout(1000).end(this.processResponse(key));
-        console.log(key);
     }
 
     getTableData() {
@@ -30,7 +28,13 @@ class DataTableApi extends BaseApi {
         let key = AppDispatcher.KEYS.DATA_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
-        console.log(key);
+    }
+
+    getTableHeader() {
+        let url = BaseApi.getHost() + "/data/header";
+        let key = AppDispatcher.KEYS.HEADER_REQUEST;
+        this.abortPendingRequests(key);
+        this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
     }
 
     getCategories() {
@@ -38,7 +42,6 @@ class DataTableApi extends BaseApi {
         let key = AppDispatcher.KEYS.CATEGORY_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
-        console.log(key);
     }
 }
 

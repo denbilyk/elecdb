@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import net.homenet.dao.entity.CategoryRecord;
+import net.homenet.service.dto.datatable.NonHeader;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Entity
 public class DataTableRecord extends AbstractRecord {
 
+    @NonHeader
     @Setter
     @Getter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

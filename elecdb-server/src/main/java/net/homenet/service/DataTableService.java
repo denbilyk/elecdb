@@ -10,7 +10,9 @@ import net.homenet.dao.repository.IDataTableRepository;
 import net.homenet.dao.util.CategoryNotFoundException;
 import net.homenet.dao.util.DataTableRecordBuilder;
 import net.homenet.dao.util.OperationResult;
-import net.homenet.service.dto.ListDefaults;
+import net.homenet.service.dto.DataTableTransformer;
+import net.homenet.service.dto.datatable.DataCol;
+import net.homenet.service.dto.datatable.HeaderDto;
 import net.homenet.web.NewEntryParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,10 +40,13 @@ public class DataTableService {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private HeaderService headerService;
 
-    public Collection<ListDefaults> listDefault() {
+
+    public Collection<List<DataCol>> listDefault(int amount) {
         List<DataTableRecord> all = dataTableRepository.findAll();
-        return Collections2.transform(all, ListDefaults::new);
+        return DataTableTransformer.transform(all, headerService.getHeaderRecordMap());
     }
 
     public OperationResult addNewRecord(NewEntryParams params) {
@@ -101,5 +106,9 @@ public class DataTableService {
             }
         }
         return results;
+    }
+
+    public Collection<HeaderDto> header() {
+        return Collections2.transform(headerService.list(), header -> new HeaderDto(header.getId(), header.getName(), header.getShow()));
     }
 }

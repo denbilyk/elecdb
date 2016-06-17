@@ -1,5 +1,5 @@
 import {Dispatcher} from "flux";
-import assign from 'object-assign';
+import assign from "object-assign";
 
 var fluxDispatcher = new Dispatcher();
 var AppDispatcher = assign(
@@ -13,7 +13,7 @@ var AppDispatcher = assign(
             if (params) {
                 payload.params = params;
             }
-            console.log("Flux dispatcher: " + key);
+            //console.log("Flux dispatcher: " + key);
             fluxDispatcher.dispatch({payload: payload});
         },
 
@@ -31,6 +31,7 @@ var AppDispatcher = assign(
     {
         KEYS: {
             DATA_REQUEST: "DATA_REQUEST",
+            HEADER_REQUEST: "HEADER_REQUEST",
             CATEGORY_REQUEST: "CATEGORY_REQUEST",
             UPDATE_FILTER: "UPDATE_FILTER",
             NEW_ENTRY: "NEW_ENTRY",
@@ -40,6 +41,7 @@ var AppDispatcher = assign(
         EVENTS: {
             UPDATE_FILTER: "UPDATE_FILTER",
             DATA_LOAD: "DATA_LOAD",
+            HEADER_LOAD: "HEADER_LOAD",
             NEW_ENTRY: "NEW_ENTRY",
             IMPORT: "IMPORT",
         },

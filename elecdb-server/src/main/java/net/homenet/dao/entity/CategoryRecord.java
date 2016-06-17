@@ -37,4 +37,12 @@ public class CategoryRecord {
     @Getter
     private Set<DataTableRecord> dataTableRecord;
 
+
+    public CategoryRecord() {
+    }
+
+    public CategoryRecord(Long id, String category) {
+        this.id = id;
+        this.category = category;
+    }
 }

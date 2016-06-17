@@ -14,7 +14,8 @@
     "react-dom": "^15.1.0",
     "muicss": "^0.6.0",
     "papaparse": "~4.1.2",
-    "react-notification-system": "^0.2.7"
+    "react-notification-system": "^0.2.7",
+    "jquery": "*"
   },
   "devDependencies": {
     "url-loader": "*",
@@ -34,6 +35,8 @@
     "webpack": "*",
     "webpack-dev-server": "*",
 
-    "rimraf": "*"
+    "rimraf": "*",
+    "body-parser":"*",
+    "gulp":"*"
   }
 }
