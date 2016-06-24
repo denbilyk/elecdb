@@ -15,7 +15,8 @@
     "muicss": "^0.6.0",
     "papaparse": "~4.1.2",
     "react-notification-system": "^0.2.7",
-    "jquery": "*"
+    "jquery": "*",
+    "font-awesome-stylus":"*"
   },
   "devDependencies": {
     "url-loader": "*",

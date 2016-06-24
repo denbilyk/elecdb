@@ -12,30 +12,45 @@ export default class NewEntry extends React.Component {
         String.prototype.isNumber = function () {
             return /^\d+$/.test(this);
         };
+        this.header_skip = ["Part Number", "Category", "Quantity", "Published"];
+        this.header = [];
         this.categories = [];
-        this.form = {};
-        this.valid = {};
+        this.form = {quantity: '0', addFields: []};
     }
 
     componentWillMount() {
         this.categoriesLoadListener = this.updateCategories.bind(this);
         DataTableStore.addCategoriesLoadListener(this.categoriesLoadListener);
+        this.headersLoadListener = this.onHeaderLoad.bind(this);
+        DataTableStore.addHeaderReloadListener(this.headersLoadListener);
     }
 
     componentDidMount() {
+        this.popupSystem = this.refs.popup;
         DataTableApi.getCategories();
+        DataTableApi.getTableHeader();
     }
 
     componentWillUnmount() {
         DataTableStore.removeCategoriesLoadListener(this.categoriesLoadListener);
-        
+        DataTableStore.removeHeaderReloadListener(this.headersLoadListener);
+
+    }
+
+    onHeaderLoad() {
+        let header = DataTableStore.getHeader();
+        Object.keys(header).forEach(key => {
+            if (this.header_skip.indexOf(header[key].name) != -1) return;
+            this.header.push(header[key]);
+        });
+        this.setState({header: this.header});
     }
 
     updateCategories() {
         this.categories = DataTableStore.getCategories();
         this.setState({categories: this.categories});
     }
-    
+
 
     back() {
         this.context.router.push('/');
@@ -44,17 +59,16 @@ export default class NewEntry extends React.Component {
     submit(e) {
         e.preventDefault();
         let valid = true;
-        this.valid.err = "";
         if (!this.form.part || this.form.part.length < 2) {
-            this.valid.err = "Part Number is invalid!   ";
+            this.popupSystem.err("Part Number is invalid!", 5);
             valid = false;
         }
         if (!this.form.category || this.form.category.length != 1) {
-            this.valid.err += "Category is invalid!     ";
+            this.popupSystem.err("Category is invalid!", 5);
             valid = false;
         }
         if (!this.form.quantity || !this.form.quantity.isNumber()) {
-            this.valid.err += "Quantity should be a number! ";
+            this.popupSystem.err("Quantity should be a number!", 5);
             valid = false;
         }
 
@@ -62,7 +76,19 @@ export default class NewEntry extends React.Component {
             DataTableApi.sendNewEntry(this.form);
             this.back();
         }
-        this.setState({validation: this.valid});
+    }
+
+    onAddField(e) {
+        let id = e.target.getAttribute('data-id');
+        let header = this.header.filter(obj => {
+            return obj.id == id;
+        });
+
+        this.form.addFields.push(header[0]);
+        this.header = this.header.filter(item => {
+            return item.id !== parseInt(id);
+        });
+        this.setState({header: this.header});
     }
 
     inputChanged(e) {
@@ -70,21 +96,13 @@ export default class NewEntry extends React.Component {
             case "part":
                 this.form.part = e.target.value;
                 break;
-            case "description":
-                this.form.description = e.target.value;
-                break;
-            case "properties":
-                this.form.properties = e.target.value;
-                break;
             case "quantity":
                 this.form.quantity = e.target.value;
                 break;
-            case "symbol":
-                this.form.symbol = e.target.value;
-                break;
-            case "footprint":
-                this.form.footprint = e.target.value;
-                break;
+            default:
+                this.form.addFields.filter(obj => {
+                    return obj.id == e.target.name;
+                })[0].value = e.target.value;
         }
     }
 

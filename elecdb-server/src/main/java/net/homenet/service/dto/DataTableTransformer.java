@@ -18,7 +18,8 @@ import java.util.*;
 public final class DataTableTransformer implements Serializable {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-    private DataTableTransformer(){}
+    private DataTableTransformer() {
+    }
 
     public static Collection<List<DataCol>> transform(List<DataTableRecord> dataTableRecord, Map<String, HeaderRecord> headerMap) {
         Collection<List<DataCol>> rows = new ArrayList<>();
@@ -65,5 +66,22 @@ public final class DataTableTransformer implements Serializable {
                 row.add(new DataCol(id, value));
             }
         }
+    }
+
+    public static Collection<List<DataCol>> transform(List<DataTableRecord> all, Map<String, HeaderRecord> headerRecordMap, String[] ids) {
+        return null;
+    }
+
+    public static DataCol getByHeader(DataTableRecord dataTableRecord, HeaderRecord headerRecord) {
+        Object value;
+        switch (headerRecord.getName()) {
+            case "Part Number":
+                value = dataTableRecord.getPartNumber();
+                break;
+            default:
+                value = "N/A";
+        }
+
+        return new DataCol(headerRecord.getId(), value);
     }
 }

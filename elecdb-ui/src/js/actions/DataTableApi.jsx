@@ -9,39 +9,52 @@ class DataTableApi extends BaseApi {
     }
 
     import(data) {
-        let url = BaseApi.getHost() + "/data/import";
+        let url = BaseApi.getHost() + "/mongo/import";
         let key = AppDispatcher.KEYS.IMPORT;
         this.abortPendingRequests(key);
-        this._pendingRequests[key] = BaseApi.post(url, data).timeout(10000).end(this.processResponse(key));
+        this._pendingRequests[key] = BaseApi.post(url, data).end(this.processResponse(key));
     }
 
 
     sendNewEntry(data) {
-        let url = BaseApi.getHost() + "/data";
+        let url = BaseApi.getHost() + "/mongo/data";
         let key = AppDispatcher.KEYS.NEW_ENTRY;
         this.abortPendingRequests(key);
-        this._pendingRequests[key] = BaseApi.post(url, data).timeout(1000).end(this.processResponse(key));
+        this._pendingRequests[key] = BaseApi.post(url, data).end(this.processResponse(key));
     }
 
-    getTableData() {
-        let url = BaseApi.getHost() + "/data";
+    getTableData(headerIds) {
+        let url = BaseApi.getHost() + "/mongo/data";
+        url = this.buildHeaderIds(url, headerIds);
         let key = AppDispatcher.KEYS.DATA_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
     }
 
     getTableHeader() {
-        let url = BaseApi.getHost() + "/data/header";
+        let url = BaseApi.getHost() + "/mongo/header";
         let key = AppDispatcher.KEYS.HEADER_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
     }
 
     getCategories() {
-        let url = BaseApi.getHost() + "/defs/category";
+        let url = BaseApi.getHost() + "/mongo/category";
         let key = AppDispatcher.KEYS.CATEGORY_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
+    }
+
+    buildHeaderIds(url, headerIds) {
+        if (!headerIds) return url;
+        url += "?header_ids=";
+        headerIds.forEach((header) => {
+            if (header.show)
+                url += header.id + ","
+        });
+        url = url.substring(url.length - 1, -1);
+        console.log(url);
+        return url;
     }
 }
 

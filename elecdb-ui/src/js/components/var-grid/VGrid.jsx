@@ -12,7 +12,7 @@ export default (context)=> {
                 <table id="data-table">
                     <thead>
                     <tr className="row-header">
-                        {self.items.header.map(item=> {
+                        {self.items.header.map(item => {
                             return (
                                 <th className="col-header" key={Utils.id()} hidden={!item.show}>{item.name}</th>)
                         })}
@@ -24,8 +24,7 @@ export default (context)=> {
                             <tr key={Utils.id()} className={i % 2 == 0 ? " " : "row-odd"}>
                                 {row.map(item => {
                                     return (
-                                        <td className="data-col row-divider" key={Utils.id()}
-                                            hidden={!self.isHeaderShown(item.header_id)}>
+                                        <td className="data-col row-divider" key={Utils.id()}>
                                             <Button variant="fab" color="primary"
                                                     className="btn-edit mui--pull-right">e</Button>
                                             <span>{item.value}</span>

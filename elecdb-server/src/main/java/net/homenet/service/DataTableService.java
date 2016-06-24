@@ -1,9 +1,11 @@
 package net.homenet.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import net.homenet.dao.entity.CategoryRecord;
+import net.homenet.dao.entity.HeaderRecord;
 import net.homenet.dao.entity.altium.AltiumImportBean;
 import net.homenet.dao.entity.datatable.DataTableRecord;
 import net.homenet.dao.repository.IDataTableRepository;
@@ -13,7 +15,7 @@ import net.homenet.dao.util.OperationResult;
 import net.homenet.service.dto.DataTableTransformer;
 import net.homenet.service.dto.datatable.DataCol;
 import net.homenet.service.dto.datatable.HeaderDto;
-import net.homenet.web.NewEntryParams;
+import net.homenet.web.EntryParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author denbilyk
@@ -49,15 +49,15 @@ public class DataTableService {
         return DataTableTransformer.transform(all, headerService.getHeaderRecordMap());
     }
 
-    public OperationResult addNewRecord(NewEntryParams params) {
+    public OperationResult addNewRecord(EntryParams params) {
         try {
             DataTableRecord record = DataTableRecordBuilder.instantiate(params.getPart(), categoryService)
                     .withCategory((long) params.getCategory())
-                    .withDescription(params.getDescription())
-                    .withProperties(params.getProperties())
-                    .withQuantity(params.getQuantity())
-                    .withLibraryRef(params.getSymbol())
-                    .addFootprintRef(params.getFootprint()).build();
+                   // .withDescription(params.getDescription())
+                   // .withProperties(params.getProperties())
+                    .withQuantity(params.getQuantity()).build();
+                   // .withLibraryRef(params.getSymbol())
+                   // .addFootprintRef(params.getFootprint()).build();
             return save(record);
         } catch (CategoryNotFoundException e) {
             log.debug(e.getMessage(), e);
@@ -109,6 +109,25 @@ public class DataTableService {
     }
 
     public Collection<HeaderDto> header() {
-        return Collections2.transform(headerService.list(), header -> new HeaderDto(header.getId(), header.getName(), header.getShow()));
+        List<HeaderDto> headerDtos = Lists.transform(headerService.list(), HeaderDto::new);
+        TreeSet<HeaderDto> set = Sets.newTreeSet();
+        set.addAll(headerDtos);
+        return set;
+    }
+
+
+    //TODO: doesn't work
+    public Collection<List<DataCol>> getByHeaderIds(String[] ids) {
+        Map<String, HeaderRecord> headerRecordMap = headerService.getHeaderRecordMap();
+        List<DataTableRecord> all = dataTableRepository.findAll();
+        TreeSet<Comparable> row = Sets.newTreeSet();
+        for (String id : ids) {
+            for (DataTableRecord dataTableRecord : all) {
+                HeaderRecord headerRecord = headerRecordMap.get(id);
+                DataCol col = DataTableTransformer.getByHeader(dataTableRecord, headerRecord);
+                row.add(col);
+            }
+        }
+    return Collections.emptyList();
     }
 }

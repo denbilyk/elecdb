@@ -61,9 +61,10 @@ export default class BaseApi {
             .timeout(timeout || TIMEOUT);
     }
 
-    static post(url, data) {
+    static post(url, data, timeout) {
         return request
-            .post(url, data);
+            .post(url, data)
+            .timeout(timeout || TIMEOUT);
     }
 
     static put(url, data) {

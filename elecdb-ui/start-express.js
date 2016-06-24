@@ -8,12 +8,12 @@ module.exports = function setupExpress() {
 
     app.get('/data', function (request, response) {
         console.log("got data table");
-        response.json(dataTable);
+        response.json(data);
     });
 
-    app.get('/header', function (request, response) {
+    app.get('/data/header', function (request, response) {
         console.log("got header table");
-        response.json(table);
+        response.json(header);
     });
 
     var server = app.listen(4001, function () {
@@ -22,6 +22,19 @@ module.exports = function setupExpress() {
         console.log("Express listening at http://%s:%s", host, port);
 
     });
+
+
+    header = [
+        {id: 1, name: "Part Number", show: true},
+        {id: 2, name: "Category", show: true},
+        {id: 3, name: "Library Ref", show: true}
+    ];
+
+
+    data = [
+        [{1: "74HCT04"}, {2: "ICs"}, {3: "sch/ICs.schLib"}],
+        [{1: "74HCT393"}, {2: "ICs"}, {3: "sch/ICs.schLib"}]
+    ];
 
 
     table = {

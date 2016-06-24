@@ -27,5 +27,8 @@ export default {
         if (status == "SAVED") {
             response.info.push("Entry with part number " + part + " has been saved!");
         }
+        if (status == "IMPORT_FAILED") {
+            response.warn.push(part);
+        }
     }
 }

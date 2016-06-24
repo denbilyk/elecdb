@@ -2,10 +2,13 @@ package net.homenet.web;
 
 import lombok.extern.slf4j.Slf4j;
 import net.homenet.dao.util.OperationResult;
-import net.homenet.service.CategoryService;
-import net.homenet.service.DataTableService;
-import net.homenet.service.dto.datatable.DataCol;
-import net.homenet.service.dto.datatable.HeaderDto;
+import net.homenet.nodao.entity.CategoryRecord;
+import net.homenet.nodao.entity.HeaderRecord;
+import net.homenet.nodao.entity.RecordField;
+import net.homenet.nodao.repository.ICategoryMongoRepository;
+import net.homenet.nodao.service.CategoryMongoService;
+import net.homenet.nodao.service.DataMongoService;
+import net.homenet.nodao.service.HeaderMongoService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,52 +23,53 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * @author denbilyk
- *         Created: 5/31/16
+ *         Created: 6/22/16
  */
 
 @RestController
-@RequestMapping("/data")
+@RequestMapping(value = "/mongo")
+@CrossOrigin(origins = "*")
 @Slf4j
-public class DataTableRestController {
+public class AppMongoController {
+    @Autowired
+    private HeaderMongoService headerMongoService;
 
     @Autowired
-    private CategoryService categoryService;
+    private DataMongoService dataMongoService;
 
     @Autowired
-    private DataTableService dataTableService;
+    private CategoryMongoService categoryMongoService;
 
-    @CrossOrigin(origins = "http://localhost:9001")
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseBody
-    public Collection<List<DataCol>> list(@RequestParam(name = "header_ids", required = false) String headerIds) {
-        if (headerIds == null)
-            return dataTableService.listDefault(1);
-        else {
-            String[] ids = headerIds.split(",");
-            return dataTableService.getByHeaderIds(ids);
-        }
+    @Autowired
+    ICategoryMongoRepository categoryMongoRepository;
+
+    @RequestMapping(value = "/header")
+    public Collection<HeaderRecord> headers() {
+        return headerMongoService.list();
     }
 
-    @CrossOrigin(origins = "http://localhost:9001")
-    @RequestMapping(value = "/header", method = RequestMethod.GET)
-    @ResponseBody
-    public Collection<HeaderDto> header() {
-        return dataTableService.header();
+    @RequestMapping(value = "/category")
+    public Collection<CategoryRecord> categories() {
+        return categoryMongoService.list();
     }
 
-    @CrossOrigin(origins = "*")
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<OperationResult> addNewEntry(@RequestBody EntryParams body) {
-        OperationResult operationResult = dataTableService.addNewRecord(body);
+    @RequestMapping(value = "/data")
+    public List<TreeSet<RecordField>> data(@RequestParam(name = "header_ids", required = false) String headerIds) {
+        if (headerIds == null) return Collections.emptyList();
+        String[] ids = headerIds.split(",");
+        return dataMongoService.loadDataByHeaderIds(ids);
+    }
+
+    @RequestMapping(value = "/data", method = RequestMethod.POST)
+    public ResponseEntity<OperationResult> saveOne(@RequestBody EntryParams body) {
+        OperationResult operationResult = dataMongoService.saveOne(body);
         return ResponseEntity.ok(operationResult);
     }
 
-
-    @CrossOrigin(origins = "*")
-    @ResponseBody
     @RequestMapping(value = "/import", method = RequestMethod.POST, headers = {"content-type=application/json"})
     public ResponseEntity<Collection<OperationResult>> saveData(HttpServletRequest request,
                                                                 HttpServletResponse response, Model model) {
@@ -78,7 +82,7 @@ public class DataTableRestController {
             }
             JSONArray array = new JSONObject(jsonItems.toString()).getJSONArray("items");
             if (array != null) {
-                Collection<OperationResult> operationResults = dataTableService.processImport(array);
+                Collection<OperationResult> operationResults = dataMongoService.processImport(array);
                 return ResponseEntity.ok(operationResults);
             }
         } catch (IOException e) {

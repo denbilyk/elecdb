@@ -20,7 +20,7 @@ export default class Notification extends React.Component {
                     background: '#FFEB3B'
                 },
                 error: {
-                    color: '#455A64',
+                    color: '#ECEFF1',
                     background: '#DD2C00'
                 }
             }

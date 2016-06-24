@@ -1,6 +1,7 @@
 .div-form-new {
-  width: 500px;
-  margin: auto;
+  width: auto;
+  margin-left: 20%;
+  margin-right: 20%;
   margin-top: 10px;
 }
 
@@ -8,59 +9,44 @@
   margin-top: 10px;
 }
 
-.popup-error {
-  height: auto;
-  background: #F44336;
-  color: white;
-  font-size: 15px;
-  line-height: 30px;
-  padding-left: 20px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0px 2px 0 rgba(0, 0, 0, 0.12);
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-weight: bold;
+.panel-form {
+  float: left;
+  min-width: 450px;
 }
 
-.popup-info {
-  height: auto;
-  background: #9CCC65;
-  color: white;
-  font-size: 15px;
-  line-height: 30px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0px 2px 0 rgba(0, 0, 0, 0.12);
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  position: absolute;
-  left: 43%;
-  padding-left: 30px;
-  padding-right: 30px;
-  z-index: 2;
-  top: 70px;
-  transition: all 0.3s ease-in;
+.additional-fields {
+  margin-left: 80%;
+  width 30%
+  ul {
+    list-style-type none
+    padding 0
+    li {
+      margin-left 40px
+      cursor pointer
+      border 1px rgba(0, 0, 0, 0.1) solid
+      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+      padding 5px
+      margin-top 3px
+      margin-bottom 3px
+      border-radius 3px
+      &:hover {
+        margin-left 0
+        margin-right 40px
+      }
+      &:hover:before {
+        content: "\f060";
+        font-family: FontAwesome;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: inherit;
+        color: rgb(17, 148, 246);
+        font-size: 14px;
+        padding-right: 0.5em;
+      }
+    }
+  }
 }
-
-
-.popup-warn {
-  height: auto;
-  background: #FFC107;
-  color: white;
-  font-size: 15px;
-  line-height: 30px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0px 2px 0 rgba(0, 0, 0, 0.12);
-  margin-bottom: 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  position: absolute;
-  left: 33%;
-  padding-left: 30px;
-  padding-right: 30px;
-  z-index: 2;
-  top: 60px;
-  transition: all 0.3s ease-in;
-}
-
-
 
 .fadein {
   opacity: 0;

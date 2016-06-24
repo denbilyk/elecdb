@@ -43,6 +43,13 @@ public class DataTableRecordBuilder {
 
     public static DataTableRecordBuilder instantiate(AltiumImportBean bean, CategoryService categoryService) throws CategoryNotFoundException, ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        long date;
+        try {
+            date = sdf.parse(bean.getPublished()).getTime();
+        } catch (ParseException e) {
+            date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(bean.getPublished()).getTime();
+        }
+
         DataTableRecordBuilder builder = new DataTableRecordBuilder(bean.getPartnumber(), categoryService);
         builder.withCategory(bean.getCategory());
         builder.withQuantity(0);
@@ -51,7 +58,7 @@ public class DataTableRecordBuilder {
         builder.withPower(bean.getPower());
         builder.withTolerance(bean.getTolerance());
         builder.withDescription(bean.getDescription());
-        builder.dataTableRecord.setPublished(sdf.parse(bean.getPublished()).getTime());
+        builder.dataTableRecord.setPublished(date);
         builder.withLibraryPath(bean.getLibrarypath());
         builder.withLibraryRef(bean.getLibraryref());
         builder.withFootprintPath(bean.getFootprintpath());
