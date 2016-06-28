@@ -14,11 +14,11 @@ import java.io.Serializable;
 public class CategoryRecordDto implements Serializable {
 
     @Getter
-    private Long id;
+    private Integer id;
     @Getter
     private String name;
 
-    public CategoryRecordDto(Long id, String name) {
+    public CategoryRecordDto(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

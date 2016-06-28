@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author denbilyk
@@ -12,9 +13,9 @@ import javax.persistence.*;
  */
 
 @EqualsAndHashCode
-@Table(name = "headers", uniqueConstraints = @UniqueConstraint(name = "uniqu_header_name", columnNames = "name"))
+@Table(name = "def_headers", uniqueConstraints = @UniqueConstraint(name = "uniqu_header_name", columnNames = "name"))
 @Entity
-public class HeaderRecord implements DomainObject {
+public class HeaderRecord implements Serializable {
 
     @Getter
     @Id
@@ -26,5 +27,8 @@ public class HeaderRecord implements DomainObject {
     @Getter
     @Setter
     private Boolean show;
+    @Getter
+    @Setter
+    private String dataType;
 
 }

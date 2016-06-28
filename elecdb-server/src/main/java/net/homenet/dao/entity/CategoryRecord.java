@@ -3,9 +3,9 @@ package net.homenet.dao.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import net.homenet.dao.entity.datatable.DataTableRecord;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -20,12 +20,12 @@ import java.util.Set;
         @UniqueConstraint(columnNames = "category")
 })
 
-public class CategoryRecord {
+public class CategoryRecord implements Serializable {
 
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @Getter
     @Setter
@@ -41,7 +41,7 @@ public class CategoryRecord {
     public CategoryRecord() {
     }
 
-    public CategoryRecord(Long id, String category) {
+    public CategoryRecord(Integer id, String category) {
         this.id = id;
         this.category = category;
     }

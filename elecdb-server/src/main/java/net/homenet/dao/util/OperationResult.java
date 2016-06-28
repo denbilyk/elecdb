@@ -42,8 +42,8 @@ public class OperationResult {
     }
 
     public enum OperationStatus {
-        MISS_PART("Part Number is missing!"), NO_CATEGORY("Category not found!"), SAVED(""), SAVING_ERROR("Entry id wasn't return"),
-        ENTRY_EXISTS("Entry with the same Part Number already exists!"), IMPORT_FAILED("Property items not found!");
+        MISS_PART("Part Number is missing!"), NO_CATEGORY("Category not found!"), SAVED(""),
+        ENTRY_EXISTS("Entry with the same Part Number already exists!"), QUANTITY_FORMAT("Quantity must be a number!");
 
         @Getter
         private String value;

@@ -1,4 +1,4 @@
-package net.homenet.service.dto.datatable;
+package net.homenet.service.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

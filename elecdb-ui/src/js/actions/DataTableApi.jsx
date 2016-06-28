@@ -9,7 +9,7 @@ class DataTableApi extends BaseApi {
     }
 
     import(data) {
-        let url = BaseApi.getHost() + "/mongo/import";
+        let url = BaseApi.getHost() + "/import";
         let key = AppDispatcher.KEYS.IMPORT;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.post(url, data).end(this.processResponse(key));
@@ -17,14 +17,14 @@ class DataTableApi extends BaseApi {
 
 
     sendNewEntry(data) {
-        let url = BaseApi.getHost() + "/mongo/data";
+        let url = BaseApi.getHost() + "/";
         let key = AppDispatcher.KEYS.NEW_ENTRY;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.post(url, data).end(this.processResponse(key));
     }
 
     getTableData(headerIds) {
-        let url = BaseApi.getHost() + "/mongo/data";
+        let url = BaseApi.getHost() + "/";
         url = this.buildHeaderIds(url, headerIds);
         let key = AppDispatcher.KEYS.DATA_REQUEST;
         this.abortPendingRequests(key);
@@ -32,14 +32,14 @@ class DataTableApi extends BaseApi {
     }
 
     getTableHeader() {
-        let url = BaseApi.getHost() + "/mongo/header";
+        let url = BaseApi.getHost() + "/header";
         let key = AppDispatcher.KEYS.HEADER_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
     }
 
     getCategories() {
-        let url = BaseApi.getHost() + "/mongo/category";
+        let url = BaseApi.getHost() + "/category";
         let key = AppDispatcher.KEYS.CATEGORY_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));

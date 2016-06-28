@@ -21,14 +21,14 @@ public class CategoryService {
 
 
     public Collection<CategoryRecordDto> getCategories() {
-        return Collections2.transform(categoryRepository.findAll(), categoryRecord -> new CategoryRecordDto(categoryRecord.getId(), categoryRecord.getCategory()));
+        return Collections2.transform(categoryRepository.findAll(), CategoryRecordDto::new);
     }
 
     public CategoryRecord getCategoryRecordByName(String category) {
         return categoryRepository.findCategoryRecordByCategory(category);
     }
 
-    public CategoryRecord getCategoryRecordById(Long id) {
+    public CategoryRecord byId(Integer id) {
         return categoryRepository.findOne(id);
     }
 

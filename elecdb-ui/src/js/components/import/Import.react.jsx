@@ -11,6 +11,7 @@ import parser from "papaparse";
 import DataTableApi from "../../actions/DataTableApi.jsx";
 import ImportStore from "../../store/ImportStore.jsx";
 import Popup from "../popup/Popup.react";
+import DataTableStore from "../../store/DataTableStore";
 
 
 export default class Import extends React.Component {
@@ -20,8 +21,10 @@ export default class Import extends React.Component {
         this.cols = [
             150, 70, 70, 70, 71, 300, 100, 150, 150, 150, 150, 110, 110, 110, 110, 110, 110, 110, 110, 110, 111
         ];
+        this.header = {};
         this.entries = {};
         this.response = {};
+        this.import_valid = {state: true};
     }
 
     componentWillMount() {
@@ -35,7 +38,7 @@ export default class Import extends React.Component {
 
     componentDidMount() {
         this.popupSystem = this.refs.popup;
-
+        this.header = DataTableStore.getHeader();
     }
 
 
@@ -44,7 +47,7 @@ export default class Import extends React.Component {
         if (response.status === -1)
             this.popupSystem.err();
         else {
-            response.warn.map(item =>{
+            response.warn.map(item => {
                 this.popupSystem.warn(item);
             });
             response.info.map(item => {
@@ -99,23 +102,56 @@ export default class Import extends React.Component {
 
     process(e) {
         e.preventDefault();
-        let toImport = [];
-        let header = {};
         let inputs = document.getElementsByTagName("input");
         let skip = [];
         for (var i = 0; i < inputs.length; i++) {
             if (inputs[i].type === 'checkbox' && !inputs[i].checked) skip.push(inputs[i].name.substr(2));
         }
         if (!this.entries.length) return;
+
+        this.import = [];
+        let localHeader = [];
         this.entries.map((entry, i)=> {
+            if (!this.import_valid.state) return;
             if (skip.indexOf(i.toString()) > -1) return;
             if (i == 0) {
-                header = entry;
+                localHeader = entry;
                 return;
             }
-            toImport.push(this.fillDto(header, entry));
+            let row = [];
+            row.push({id: 2, value: this.filename.split('.')[0]});
+            row.push({id: 3, value: 0});
+            entry.map((cell, i) => {
+                let hedObj = this.header.find(curr => {
+                    return curr.name == localHeader[i];
+                });
+                if (hedObj) row.push({id: hedObj.id, value: cell});
+                else {
+                    this.import_valid.state = false;
+                    this.import_valid.header = localHeader[i];
+                }
+            });
+            if (this.import_valid.state)
+                this.import.push(row);
         });
-        DataTableApi.import({items: toImport});
+
+
+        if (!this.import_valid.state)
+            this.popupSystem.err("Header columns can not be assigned: " + this.import_valid.header);
+        else
+            DataTableApi.import(this.import);
+    }
+
+    createDto(entry) {
+        let obj = [];
+        entry.map(item => {
+            let hed = this.header.find(curr => {
+                return curr.name == item;
+            });
+            if (!hed) return undefined;
+            obj.push({id: hed.id});
+        });
+        return obj;
     }
 
     fillDto(header, entry) {

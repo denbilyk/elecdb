@@ -1,8 +1,7 @@
 package net.homenet;
 
 import net.homenet.dao.entity.HeaderRecord;
-import net.homenet.dao.entity.datatable.DataTableRecord;
-import net.homenet.dao.repository.IDataTableRepository;
+import net.homenet.dao.entity.DataTableRecord;
 import net.homenet.dao.repository.IHeadersRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -19,14 +19,11 @@ import java.util.List;
 public class ElecdbApplicationTests {
 
     @Autowired
-    private IDataTableRepository dataTableRepository;
-
-    @Autowired
     private IHeadersRepository headersRepository;
 
     @Test
     public void contextLoads() {
-        List<DataTableRecord> records = dataTableRepository.findAll();
+        List<DataTableRecord> records = new ArrayList<>(); //dataTableRepository.findAll();
         for (DataTableRecord record : records) {
             record.getCategory();
         }

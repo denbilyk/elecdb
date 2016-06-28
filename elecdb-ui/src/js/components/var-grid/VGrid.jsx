@@ -27,7 +27,7 @@ export default (context)=> {
                                         <td className="data-col row-divider" key={Utils.id()}>
                                             <Button variant="fab" color="primary"
                                                     className="btn-edit mui--pull-right">e</Button>
-                                            <span>{item.value}</span>
+                                            <span>{item}</span>
                                         </td>)
                                 })}
                             </tr>
