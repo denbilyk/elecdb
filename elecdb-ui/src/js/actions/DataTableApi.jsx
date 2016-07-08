@@ -23,9 +23,10 @@ class DataTableApi extends BaseApi {
         this._pendingRequests[key] = BaseApi.post(url, data).end(this.processResponse(key));
     }
 
-    getTableData(headerIds) {
+    getTableData(headerIds, categoryIds) {
         let url = BaseApi.getHost() + "/";
         url = this.buildHeaderIds(url, headerIds);
+        url = this.buildCategoryIds(url, categoryIds);
         let key = AppDispatcher.KEYS.DATA_REQUEST;
         this.abortPendingRequests(key);
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
@@ -51,6 +52,16 @@ class DataTableApi extends BaseApi {
         headerIds.forEach((header) => {
             if (header.show)
                 url += header.id + ","
+        });
+        url = url.substring(url.length - 1, -1);
+        return url;
+    }
+
+    buildCategoryIds(url, categoryIds) {
+        if (!categoryIds) return url;
+        url += "&category_ids=";
+        categoryIds.forEach(category => {
+            url += category.show === undefined ? category.id + "," : category.show ? category.id + "," : "";
         });
         url = url.substring(url.length - 1, -1);
         console.log(url);

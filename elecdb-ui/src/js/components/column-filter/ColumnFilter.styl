@@ -1,18 +1,23 @@
 .filter-container {
-  position: absolute;
-  top: 70px;
+  width 100%
 }
 
 .filter-panel {
+  position: absolute;
+  margin-top: 5px;
   max-height: 47px;
   height: 47px;
   width: 100px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+  border-radius: 7% !important;
+  float: left;
+  margin-bottom: 5px !important;
   &:hover {
     height: auto;
     max-height: 700px;
     width: 420px;
+    border-radius: 3% !important;
     z-index: 1;
   }
 
@@ -25,4 +30,36 @@
 
 .clear {
   clear: both;
+}
+
+#category-filter {
+  float left
+  height: 47px;
+  margin-left: 10%;
+  margin-top: 5px;
+  cursor: pointer;
+
+  &:after {
+    content: "\f063";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    color: rgb(17, 148, 246);
+    font-size: 14px;
+    display: inline;
+    margin-left: 5px;
+  }
+}
+
+.category-content {
+  width: 100%;
+  display: none;
+  clear: both;
+}
+
+.category-chb {
+  float: left;
+  margin-top: 0 !important;
+  margin-left: 20px;
 }

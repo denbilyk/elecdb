@@ -38,12 +38,13 @@ public class DataTableService {
     private HeaderService headerService;
 
 
-    public List<List<Object>> loadDataByHeaderIds(String... ids) {
+    public List<List<Object>> loadDataByHeaderIds(List<Integer> categoryIds, String... ids) {
         List<Integer> srcIds = Arrays.stream(ids).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
         List<DataTableRecord> all = dataTableRepository.findAll();
         List<Object> row;
         List<List<Object>> data = new ArrayList<>();
         for (DataTableRecord record : all) {
+            if (categoryIds != null && !categoryIds.contains(record.getCategory().getId())) continue;
             row = Lists.newLinkedList();
             for (Integer id : srcIds) {
                 row.add(record.getValueByHeaderId(id, headerService.getDataTypeById(id)));

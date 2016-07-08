@@ -18,10 +18,12 @@ export default class VGrid extends React.Component {
         this.items = {};
         this.items.header = [];
         this.items.rows = [];
+        this.items.categories = [];
     }
 
     componentDidMount() {
         DataTableApi.getTableHeader();
+       // DataTableApi.getCategories();
         mui.overlay('on', {'static': true}, this.loadingEl);
     }
 
@@ -30,12 +32,14 @@ export default class VGrid extends React.Component {
         this.loadDataListener = this.reloadData.bind(this);
         DataTableStore.addHeaderReloadListener(this.loadHeaderListener);
         DataTableStore.addDataReloadListener(this.loadDataListener);
+        //DataTableStore.addCategoriesLoadListener(this.categoriesReload.bind(this));
 
     }
 
     componentWillUnmount() {
         DataTableStore.removeHeaderReloadListener(this.loadHeaderListener);
         DataTableStore.removeDataReloadListener(this.loadDataListener);
+       // DataTableStore.removeCategoriesLoadListener(this.categoriesReload.bind(this));
     }
 
     addTableResizer() {
@@ -74,16 +78,20 @@ export default class VGrid extends React.Component {
             return true;
         }
     }
-
+    
 
     applyColumnFilter(id, state) {
         let hed_id = parseInt(id.substring(id.lastIndexOf('-') + 1));
-        var obj = this.items.header.find(curr => {
+        this.items.header.find(curr => {
             return curr.id == hed_id;
-        });
-        obj.show = state;
+        }).show = state;
         this.setState({header: this.items.header});
         DataTableApi.getTableData(this.items.header);
+    }
+
+    applyCategoryFilter(categories) {
+        if (categories == null) return;
+        DataTableApi.getTableData(this.items.header, categories);
     }
 
     render() {

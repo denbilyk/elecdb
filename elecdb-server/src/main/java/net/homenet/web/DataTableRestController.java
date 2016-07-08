@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author denbilyk
@@ -41,13 +39,18 @@ public class DataTableRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Collection<List<Object>> list(@RequestParam(name = "header_ids", required = false) String headerIds) {
-        if (headerIds == null)
+    public Collection<List<Object>> list(@RequestParam(name = "header_ids", required = false) String hedIds,
+                                         @RequestParam(name = "category_ids", required = false) String catIds
+    ) {
+
+        if (hedIds == null)
             return Collections.emptyList();
-        else {
-            String[] ids = headerIds.split(",");
-            return dataTableService.loadDataByHeaderIds(ids);
-        }
+        String[] headerIds = hedIds.split(",");
+
+        List<Integer> categoryIds = catIds == null || catIds.isEmpty() ? null :
+                Arrays.stream(catIds.split(",")).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
+
+        return dataTableService.loadDataByHeaderIds(categoryIds, headerIds);
     }
 
     @RequestMapping(value = "/header", method = RequestMethod.GET)
