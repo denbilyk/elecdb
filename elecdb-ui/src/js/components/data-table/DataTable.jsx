@@ -8,7 +8,7 @@ import Container from "muicss/lib/react/container";
 import VGrid from "../var-grid/VGrid.react";
 import EntryStore from "../../store/EntryStore";
 import Popup from "../popup/Popup.react";
-import DataTableApi from "../../actions/DataTableApi";
+//import DataTableApi from "../../actions/DataTableApi";
 
 export default class DataTable extends React.Component {
 
@@ -52,7 +52,6 @@ export default class DataTable extends React.Component {
 
         }
         EntryStore.clear();
-        DataTableApi.getTableData();
     }
 
     render() {

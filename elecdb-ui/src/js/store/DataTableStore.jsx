@@ -22,6 +22,18 @@ class DataTableStore extends EventEmitter {
         return this.categories;
     }
 
+    getDetails() {
+        return this.details;
+    }
+
+    addDetailsReloadListener(callback) {
+        this.on(AppDispatcher.EVENTS.DETAILS_LOAD, callback);
+    }
+
+    removeDetailsReloadListener(callback) {
+        this.removeListener(AppDispatcher.EVENTS.DETAILS_LOAD, callback);
+    }
+
     addHeaderReloadListener(callback) {
         this.on(AppDispatcher.EVENTS.HEADER_LOAD, callback);
     }
@@ -79,5 +91,14 @@ token = AppDispatcher.register(AppDispatcher.KEYS.CATEGORY_REQUEST, (resp) => {
 });
 DataTableStore.tokens.category = token;
 
+
+token = AppDispatcher.register(AppDispatcher.KEYS.DETAILS_REQUEST, resp => {
+    if (helper.processErrors(resp)) {
+        store.details = resp.data;
+        store.emit(AppDispatcher.EVENTS.DETAILS_LOAD);
+    }
+    return true;
+});
+DataTableStore.tokens.details = token;
 
 export default store;

@@ -36,6 +36,7 @@ var AppDispatcher = assign(
             UPDATE_FILTER: "UPDATE_FILTER",
             NEW_ENTRY: "NEW_ENTRY",
             IMPORT: "IMPORT",
+            DETAILS_REQUEST: "DETAILS_REQUEST"
 
         },
         EVENTS: {
@@ -44,6 +45,7 @@ var AppDispatcher = assign(
             HEADER_LOAD: "HEADER_LOAD",
             NEW_ENTRY: "NEW_ENTRY",
             IMPORT: "IMPORT",
+            DETAILS_LOAD: "DETAILS_LOAD"
         },
         REQUEST: {
             PENDING: "PENDING",

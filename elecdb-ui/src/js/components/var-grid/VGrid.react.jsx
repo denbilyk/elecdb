@@ -18,12 +18,10 @@ export default class VGrid extends React.Component {
         this.items = {};
         this.items.header = [];
         this.items.rows = [];
-        this.items.categories = [];
     }
 
     componentDidMount() {
         DataTableApi.getTableHeader();
-       // DataTableApi.getCategories();
         mui.overlay('on', {'static': true}, this.loadingEl);
     }
 
@@ -32,26 +30,13 @@ export default class VGrid extends React.Component {
         this.loadDataListener = this.reloadData.bind(this);
         DataTableStore.addHeaderReloadListener(this.loadHeaderListener);
         DataTableStore.addDataReloadListener(this.loadDataListener);
-        //DataTableStore.addCategoriesLoadListener(this.categoriesReload.bind(this));
 
     }
 
     componentWillUnmount() {
         DataTableStore.removeHeaderReloadListener(this.loadHeaderListener);
         DataTableStore.removeDataReloadListener(this.loadDataListener);
-       // DataTableStore.removeCategoriesLoadListener(this.categoriesReload.bind(this));
     }
-
-    addTableResizer() {
-        $(function () {
-            $("#data-table").colResizable({
-                liveDrag: true,
-                resizeMode: 'overflow',
-                draggingClass: "dragging",
-            });
-        });
-    }
-
 
     headerReload() {
         var table = DataTableStore.getHeader();
@@ -71,14 +56,19 @@ export default class VGrid extends React.Component {
         try {
             this.items.rows = table; //[[{header_id:'', value: ''},{},{}],[]]
             this.setState({data: this.items.rows});
-            //this.addTableResizer();
             mui.overlay('off');
         } catch (Error) {
             console.error("VGrid Reload Error!", Error);
             return true;
         }
     }
-    
+
+    onEdit(item) {
+        this.context.router.push({
+            pathname: "/details",
+            state: {part: item}
+        });
+    }
 
     applyColumnFilter(id, state) {
         let hed_id = parseInt(id.substring(id.lastIndexOf('-') + 1));
@@ -98,3 +88,8 @@ export default class VGrid extends React.Component {
         return tpl(this);
     }
 }
+
+
+VGrid.contextTypes = {
+    router: React.PropTypes.object
+};

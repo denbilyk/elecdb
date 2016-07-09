@@ -1,6 +1,5 @@
 import React from "react";
 import Utils from "../../Utils.jsx";
-import Button from "muicss/lib/react/button";
 import ColumnFilter from "../column-filter/ColumnFilter.react";
 
 export default (context)=> {
@@ -22,12 +21,14 @@ export default (context)=> {
                     {self.items.rows.map((row, i) => {
                         return (
                             <tr key={Utils.id()} className={i % 2 == 0 ? " " : "row-odd"}>
-                                {row.map(item => {
+                                {row.map((item, i) => {
                                     return (
                                         <td className="data-col row-divider" key={Utils.id()}>
-                                            <Button variant="fab" color="primary"
-                                                    className="btn-edit mui--pull-right">e</Button>
-                                            <span>{item}</span>
+                                            {i == 0 ? (
+                                                <div className="details" onClick={self.onEdit.bind(self, row[0])}>
+                                                    <span>{item}</span></div>)
+                                                : (<span>{item}</span>)
+                                            }
                                         </td>)
                                 })}
                             </tr>

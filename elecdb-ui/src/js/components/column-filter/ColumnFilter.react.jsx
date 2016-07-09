@@ -21,13 +21,14 @@ export default class ColumnFilter extends React.Component {
 
     componentWillMount() {
         this.loadHeaderListener = this.headerReload.bind(this);
+        this.loadCategoriesListener = this.categoriesReload.bind(this);
         DataTableStore.addHeaderReloadListener(this.loadHeaderListener);
-        DataTableStore.addCategoriesLoadListener(this.categoriesReload.bind(this));
+        DataTableStore.addCategoriesLoadListener(this.loadCategoriesListener);
     }
 
     componentWillUnmount() {
         DataTableStore.removeHeaderReloadListener(this.loadHeaderListener);
-        DataTableStore.removeCategoriesLoadListener(this.categoriesReload.bind(this));
+        DataTableStore.removeCategoriesLoadListener(this.loadCategoriesListener);
     }
 
 
@@ -53,7 +54,6 @@ export default class ColumnFilter extends React.Component {
 
     categoriesReload() {
         this.categories = DataTableStore.getCategories();
-        this.table.items.categories = this.categories;
         this.setState({categoryFilter: this.categories})
     }
 
@@ -105,7 +105,7 @@ export default class ColumnFilter extends React.Component {
                                           onChange={self.categoryChanged.bind(self)} key={Utils.id()}/>
                             )
                         })}
-
+                        <div className="clear"/>
                     </div>
                 </Row>
             </Container>

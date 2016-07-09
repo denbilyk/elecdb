@@ -5,6 +5,7 @@ import net.homenet.dao.util.OperationResult;
 import net.homenet.service.CategoryService;
 import net.homenet.service.DataTableService;
 import net.homenet.service.dto.CategoryRecordDto;
+import net.homenet.service.dto.DetailsDto;
 import net.homenet.service.dto.HeaderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,6 @@ public class DataTableRestController {
     }
 
     @RequestMapping(value = "/header", method = RequestMethod.GET)
-    @ResponseBody
     public Collection<HeaderDto> header() {
         return dataTableService.header();
     }
@@ -69,6 +69,17 @@ public class DataTableRestController {
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     public ResponseEntity<Collection<OperationResult>> dataImport(@RequestBody Collection<List<Map>> data) {
         Collection<OperationResult> operationResult = dataTableService.processImport(data);
+        return ResponseEntity.ok(operationResult);
+    }
+
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    public Collection<DetailsDto> details(@RequestParam(name = "part") String partNumber) {
+        return dataTableService.details(partNumber);
+    }
+
+    @RequestMapping(value = "/details", method = RequestMethod.PUT)
+    public ResponseEntity<OperationResult> updateRecord(@RequestBody DetailsParams params) {
+        OperationResult operationResult = dataTableService.updateRecord(params);
         return ResponseEntity.ok(operationResult);
     }
 }

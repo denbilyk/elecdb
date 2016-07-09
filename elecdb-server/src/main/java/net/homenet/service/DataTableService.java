@@ -9,10 +9,13 @@ import net.homenet.dao.entity.DataTableRecord;
 import net.homenet.dao.entity.HeaderRecord;
 import net.homenet.dao.repository.IDataTableRepository;
 import net.homenet.dao.util.OperationResult;
+import net.homenet.service.dto.DetailsDto;
 import net.homenet.service.dto.HeaderDto;
+import net.homenet.web.DetailsParams;
 import net.homenet.web.EntryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -40,12 +43,12 @@ public class DataTableService {
 
     public List<List<Object>> loadDataByHeaderIds(List<Integer> categoryIds, String... ids) {
         List<Integer> srcIds = Arrays.stream(ids).mapToInt(Integer::parseInt).boxed().collect(Collectors.toList());
-        List<DataTableRecord> all = dataTableRepository.findAll();
+        List<DataTableRecord> all = dataTableRepository.findAll(new Sort("partNumber"));
         List<Object> row;
         List<List<Object>> data = new ArrayList<>();
         for (DataTableRecord record : all) {
             if (categoryIds != null && !categoryIds.contains(record.getCategory().getId())) continue;
-            row = Lists.newLinkedList();
+            row = Lists.newArrayList();
             for (Integer id : srcIds) {
                 row.add(record.getValueByHeaderId(id, headerService.getDataTypeById(id)));
             }
@@ -76,7 +79,8 @@ public class DataTableService {
     }
 
     private OperationResult update(DataTableRecord record) {
-        if (record.getPartNumber() == null) return OperationResult.status(OperationResult.OperationStatus.MISS_PART);
+        if (record.getPartNumber() == null || record.getPartNumber().isEmpty())
+            return OperationResult.status(OperationResult.OperationStatus.MISS_PART);
         dataTableRepository.save(record);
         return OperationResult.status(OperationResult.OperationStatus.SAVED).text(record.getPartNumber());
     }
@@ -145,5 +149,36 @@ public class DataTableService {
         TreeSet<HeaderDto> set = Sets.newTreeSet();
         set.addAll(headerDtos);
         return set;
+    }
+
+    public Collection<DetailsDto> details(String partNumber) {
+        DataTableRecord record = dataTableRepository.findOne(partNumber);
+        if (record == null) return Collections.emptyList();
+        List<DetailsDto> detailsDtos = Lists.transform(headerService.list(), header -> new DetailsDto(header.getId(), header.getName(), record.getValueByHeaderId(header.getId(), header.getDataType())));
+        TreeSet<DetailsDto> set = Sets.newTreeSet();
+        set.addAll(detailsDtos);
+        return set;
+    }
+
+    public OperationResult updateRecord(DetailsParams params) {
+        String partNumber = params.getPartNumber();
+        if (partNumber == null || partNumber.isEmpty())
+            return OperationResult.status(OperationResult.OperationStatus.MISS_PART);
+        DataTableRecord record = dataTableRepository.findOne(partNumber);
+        if (record == null)
+            return OperationResult.status(OperationResult.OperationStatus.ENTRY_NOT_FOUND).text(partNumber);
+        for (Map map : params.getFields()) {
+            Object value = map.get("value");
+            if (value == null) continue;
+            Integer headerId = headerService.byId((Integer) map.get("id")).getId();
+            if (HeaderConstants.PARTNUMBER.getId() == headerId) continue;
+            if (HeaderConstants.CATEGORY.getId() == headerId) continue;
+            if (HeaderConstants.QUANTITY.getId() == headerId) {
+                record.setQuantity(Integer.parseInt(String.valueOf(value)));
+                continue;
+            }
+            record.addField(String.valueOf(value), headerId);
+        }
+        return update(record);
     }
 }

@@ -46,6 +46,20 @@ class DataTableApi extends BaseApi {
         this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
     }
 
+    getDetails(part) {
+        let url = BaseApi.getHost() + "/details?part=" + part;
+        let key = AppDispatcher.KEYS.DETAILS_REQUEST;
+        this.abortPendingRequests(key);
+        this._pendingRequests[key] = BaseApi.get(url).end(this.processResponse(key));
+    }
+
+    updateDetails(data) {
+        let url = BaseApi.getHost() + "/details";
+        let key = AppDispatcher.KEYS.NEW_ENTRY;
+        this.abortPendingRequests(key);
+        this._pendingRequests[key] = BaseApi.put(url, data).end(this.processResponse(key));
+    }
+
     buildHeaderIds(url, headerIds) {
         if (!headerIds) return url;
         url += "?header_ids=";

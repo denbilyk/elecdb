@@ -21,8 +21,8 @@ export default class NewEntry extends React.Component {
     componentWillMount() {
         this.categoriesLoadListener = this.updateCategories.bind(this);
         DataTableStore.addCategoriesLoadListener(this.categoriesLoadListener);
-        this.headersLoadListener = this.onHeaderLoad.bind(this);
-        DataTableStore.addHeaderReloadListener(this.headersLoadListener);
+        this.detailsLoadListener = this.onHeaderLoad.bind(this);
+        DataTableStore.addHeaderReloadListener(this.detailsLoadListener);
     }
 
     componentDidMount() {
@@ -33,8 +33,7 @@ export default class NewEntry extends React.Component {
 
     componentWillUnmount() {
         DataTableStore.removeCategoriesLoadListener(this.categoriesLoadListener);
-        DataTableStore.removeHeaderReloadListener(this.headersLoadListener);
-
+        DataTableStore.removeHeaderReloadListener(this.detailsLoadListener);
     }
 
     onHeaderLoad() {
