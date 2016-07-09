@@ -60,6 +60,13 @@ class DataTableApi extends BaseApi {
         this._pendingRequests[key] = BaseApi.put(url, data).end(this.processResponse(key));
     }
 
+    deleteRecord(partNumber) {
+        let url = BaseApi.getHost() + "/" + partNumber;
+        let key = AppDispatcher.KEYS.DELETE_ENTRY;
+        this.abortPendingRequests(key);
+        this._pendingRequests[key] = BaseApi.del(url).end(this.processResponse(key));
+    }
+
     buildHeaderIds(url, headerIds) {
         if (!headerIds) return url;
         url += "?header_ids=";

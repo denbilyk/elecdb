@@ -62,6 +62,15 @@ export default class Details extends React.Component {
         }).value = e.target.value;
     }
 
+    deleteRecord() {
+        let part = this.props.location.state.part;
+        if (!part)
+            this.popupSystem.warn("Can not get part number!");
+        else {
+            DataTableApi.deleteRecord(part);
+            this.back();
+        }
+    }
 
     save() {
         let value = this.item.find(curr => {
@@ -69,13 +78,13 @@ export default class Details extends React.Component {
         }).value;
         let isNumber = true;
         if (typeof(value) == 'string')  isNumber = value.isNumber();
-            if (isNumber) {
-                this.item = {partNumber: this.props.location.state.part, fields: this.item};
-                DataTableApi.updateDetails(this.item);
-                this.back();
-            }
-            else
-                this.popupSystem.warn("Quantity should be a number!");
+        if (isNumber) {
+            this.item = {partNumber: this.props.location.state.part, fields: this.item};
+            DataTableApi.updateDetails(this.item);
+            this.back();
+        }
+        else
+            this.popupSystem.warn("Quantity should be a number!");
     }
 
     back() {
@@ -104,8 +113,10 @@ export default class Details extends React.Component {
                             );
                         })}
                     </Form>
+                    <Button variant="raised" className="mui-btn--primary" onClick={self.save.bind(self)}>Save</Button>
                     <Button variant="raised" onClick={self.back.bind(self)}>Back</Button>
-                    <Button variant="raised" onClick={self.save.bind(self)}>Save</Button>
+                    <Button variant="raised" className="mui-btn--danger"
+                            onClick={self.deleteRecord.bind(self)}>Delete</Button>
                 </Container>
             </div>
         )

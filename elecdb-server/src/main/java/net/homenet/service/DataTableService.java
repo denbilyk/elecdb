@@ -181,4 +181,11 @@ public class DataTableService {
         }
         return update(record);
     }
+
+    public OperationResult deleteRecord(String partNumber) {
+        if (!dataTableRepository.exists(partNumber))
+            return OperationResult.status(OperationResult.OperationStatus.ENTRY_NOT_FOUND).text(partNumber);
+        dataTableRepository.delete(partNumber);
+        return OperationResult.status(OperationResult.OperationStatus.DELETE_ENTRY).text(partNumber);
+    }
 }

@@ -17,6 +17,14 @@ class EntryStore extends EventEmitter {
         this.removeListener(AppDispatcher.EVENTS.NEW_ENTRY, callback);
     }
 
+    addDeleteEntryResponseListener(callback) {
+        this.on(AppDispatcher.EVENTS.DELETE_ENTRY, callback);
+    }
+
+    removeDeleteEntryResponseListener(callback) {
+        this.removeListener(AppDispatcher.EVENTS.DELETE_ENTRY, callback);
+    }
+
     getResponseMessages() {
         return this.response;
     }
@@ -44,4 +52,14 @@ let token = AppDispatcher.register(AppDispatcher.KEYS.NEW_ENTRY, (resp) => {
 
 EntryStore.tokens.entry = token;
 
+token = AppDispatcher.register(AppDispatcher.KEYS.DELETE_ENTRY, resp => {
+    if (helper.processErrors(resp)) {
+        helper.processResponse(resp.data, store.response);
+    } else {
+        store.response.status = -1;
+    }
+    store.emit(AppDispatcher.EVENTS.DELETE_ENTRY);
+    return true;
+});
+EntryStore.tokens.delete = token;
 export default store;

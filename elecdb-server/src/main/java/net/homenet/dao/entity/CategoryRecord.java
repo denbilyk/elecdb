@@ -32,7 +32,7 @@ public class CategoryRecord implements Serializable {
     private String category;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", orphanRemoval = true)
     @Setter
     @Getter
     private Set<DataTableRecord> dataTableRecord;

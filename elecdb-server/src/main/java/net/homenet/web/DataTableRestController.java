@@ -82,4 +82,10 @@ public class DataTableRestController {
         OperationResult operationResult = dataTableService.updateRecord(params);
         return ResponseEntity.ok(operationResult);
     }
+
+    @RequestMapping(value = "/{part}", method = RequestMethod.DELETE)
+    public ResponseEntity<OperationResult> delete(@PathVariable("part") String partNumber) {
+        OperationResult operationResult = dataTableService.deleteRecord(partNumber);
+        return ResponseEntity.ok(operationResult);
+    }
 }

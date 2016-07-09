@@ -8,7 +8,6 @@ import Container from "muicss/lib/react/container";
 import VGrid from "../var-grid/VGrid.react";
 import EntryStore from "../../store/EntryStore";
 import Popup from "../popup/Popup.react";
-//import DataTableApi from "../../actions/DataTableApi";
 
 export default class DataTable extends React.Component {
 
@@ -20,10 +19,13 @@ export default class DataTable extends React.Component {
     componentWillMount() {
         this.newEntryResponseListener = this.onResponse.bind(this);
         EntryStore.addNewEntryResponseListener(this.newEntryResponseListener);
+        this.deleteEntryResponseListener = this.onResponse.bind(this);
+        EntryStore.addDeleteEntryResponseListener(this.deleteEntryResponseListener);
     }
 
     componentWillUnmount() {
         EntryStore.removeNewEntryResponseListener(this.newEntryResponseListener);
+        EntryStore.removeDeleteEntryResponseListener(this.deleteEntryResponseListener);
     }
 
     componentDidMount() {

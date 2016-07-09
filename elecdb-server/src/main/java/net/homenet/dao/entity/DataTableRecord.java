@@ -72,4 +72,11 @@ public class DataTableRecord implements Serializable {
         if (className.equals(String.class.getName())) return value;
         return net.homenet.dao.util.Converter.get(className, value).value();
     }
+
+    @Transient
+    @PreRemove
+    public void preRemove() {
+        this.fields.clear();
+        this.category = null;
+    }
 }
