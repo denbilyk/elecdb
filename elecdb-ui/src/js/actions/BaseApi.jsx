@@ -2,8 +2,18 @@ import request from "superagent";
 import AppDispatcher from "../actions/AppDispatcher.jsx";
 
 
-var SERVER_HOST = "http://localhost:8080";
+var SERVER_HOST = getHostUrl();
 var TIMEOUT = getTimeOut();
+
+function getHostUrl() {
+    var result = "http://localhost:8080/api";
+    try {
+        result = API_URL_CFG + "/api";
+    } catch (e) {
+
+    }
+    return result;
+}
 
 function getTimeOut() {
     var result = 0;

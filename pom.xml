@@ -8,10 +8,13 @@
     <artifactId>elecdb</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-<modules>
-    <module>elecdb-server</module>
-    <module>elecdb-ui</module>
-</modules>
-    
+    <modules>
+        <module>elecdb-server</module>
+        <module>elecdb-ui</module>
+    </modules>
+
+    <properties>
+        <app.name>elecdb</app.name>
+    </properties>
 
 </project>

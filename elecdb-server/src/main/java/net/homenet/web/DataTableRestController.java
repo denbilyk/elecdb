@@ -8,6 +8,7 @@ import net.homenet.service.dto.CategoryRecordDto;
 import net.homenet.service.dto.DetailsDto;
 import net.homenet.service.dto.HeaderDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  */
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class DataTableRestController {

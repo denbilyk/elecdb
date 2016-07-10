@@ -1,15 +1,18 @@
 package net.homenet.config;
 
 /**
- * Created by denbilyk on 5/26/16.
+ * @author denbilyk
+ * Created: 5/26/16
  */
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import net.homenet.ElecdbApplication;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -29,29 +32,20 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackageClasses = ElecdbApplication.class, entityManagerFactoryRef = "emf", transactionManagerRef = "tm")
 public class JpaConfig implements TransactionManagementConfigurer {
 
-
-    @Value("${dataSource.driverClassName}")
-    private String driver;
-    @Value("${dataSource.url}")
-    private String url;
-    @Value("${dataSource.username}")
-    private String username;
-    @Value("${dataSource.password}")
-    private String password;
     @Value("${hibernate.dialect}")
     private String dialect;
     @Value("${hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
+    @Value("${datasource.url}")
+    private String url;
 
+    @Primary
     @Bean
+    @ConfigurationProperties(prefix = "datasource")
     public DataSource configureDataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(driver);
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-
-        return new HikariDataSource(config);
+        return DataSourceBuilder.create().type(HikariDataSource.class)
+                .url(url)
+                .build();
     }
 
     @Bean(name = "emf")
