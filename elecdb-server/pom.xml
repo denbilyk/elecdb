@@ -186,6 +186,11 @@
     <profiles>
         <profile>
             <id>prod</id>
+            <activation>
+                <property>
+                    <name>env.DYNO</name>
+                </property>
+            </activation>
             <properties>
                 <spring.profile>heroku</spring.profile>
             </properties>
