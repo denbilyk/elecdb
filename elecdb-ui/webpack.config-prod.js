@@ -39,7 +39,7 @@ module.exports = {
 
     output: {
         path: __dirname + '/target/classes/WEB-INF',
-        publicPath: '/' + args.name + '/',
+        publicPath: '/',
         filename: '[hash].js',
         chunkFilename: '[chunkhash].js'
 
@@ -102,7 +102,7 @@ module.exports = {
         HTMLWebpackPluginConfig,
         new webpack.DefinePlugin(
             {
-                API_URL_CFG: JSON.stringify(args.host + "/" + args.name),
+                API_URL_CFG: JSON.stringify(args.host),
                 TIMEOUT_CFG: args.timeout,
                 'process.env.NODE_ENV': JSON.stringify('production')
             }

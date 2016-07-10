@@ -85,7 +85,6 @@ class DataTableApi extends BaseApi {
             url += category.show === undefined ? category.id + "," : category.show ? category.id + "," : "";
         });
         url = url.substring(url.length - 1, -1);
-        console.log(url);
         return url;
     }
 }

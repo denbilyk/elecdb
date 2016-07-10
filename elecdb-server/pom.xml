@@ -186,9 +186,6 @@
     <profiles>
         <profile>
             <id>prod</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <spring.profile>heroku</spring.profile>
             </properties>
