@@ -3,7 +3,6 @@ import "./VGrid.styl";
 import tpl from "./VGrid.jsx";
 import DataTableApi from "../../actions/DataTableApi";
 import DataTableStore from "../../store/DataTableStore";
-import "colResizable-1.6";
 import mui from "muicss";
 
 

@@ -30,6 +30,8 @@ var AppDispatcher = assign(
 
     {
         KEYS: {
+            LOGIN_USER: "LOGIN_USER",
+            LOGOUT_USER: "LOGOUT_USER",
             DATA_REQUEST: "DATA_REQUEST",
             HEADER_REQUEST: "HEADER_REQUEST",
             CATEGORY_REQUEST: "CATEGORY_REQUEST",
@@ -41,6 +43,7 @@ var AppDispatcher = assign(
 
         },
         EVENTS: {
+            LOGIN_USER: "LOGIN_USER",
             UPDATE_FILTER: "UPDATE_FILTER",
             DATA_LOAD: "DATA_LOAD",
             HEADER_LOAD: "HEADER_LOAD",

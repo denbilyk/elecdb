@@ -2,12 +2,12 @@ import "muicss/lib/css/mui.css";
 import "./DataTable.styl";
 import React from "react";
 import {render} from "react-dom";
-import Appbar from "muicss/lib/react/appbar";
 import Button from "muicss/lib/react/button";
 import Container from "muicss/lib/react/container";
 import VGrid from "../var-grid/VGrid.react";
 import EntryStore from "../../store/EntryStore";
 import Popup from "../popup/Popup.react";
+import Header from "../auth-header/Header.react";
 
 export default class DataTable extends React.Component {
 
@@ -61,7 +61,7 @@ export default class DataTable extends React.Component {
         return (
             <div id="app">
                 <Popup ref="popup"/>
-                <Appbar className="mui--text-light mui--text-display2 mui--text-center">Title</Appbar>
+                <Header title="Elecdb"/>
                 <div>
                     <Button variant="fab" color="primary" className="btn-add mui--pull-right"
                             onClick={self.transitToAddNew.bind(self)}>+</Button>
@@ -70,7 +70,6 @@ export default class DataTable extends React.Component {
                     <Container>
                         <VGrid/>
                     </Container>
-
                 </div>
             </div>
         )

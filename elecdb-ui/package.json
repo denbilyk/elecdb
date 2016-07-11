@@ -16,7 +16,8 @@
     "papaparse": "~4.1.2",
     "react-notification-system": "^0.2.7",
     "jquery": "*",
-    "font-awesome-stylus":"*"
+    "font-awesome-stylus":"*",
+    "auth0-lock": "*"
   },
   "devDependencies": {
     "url-loader": "*",
@@ -38,6 +39,9 @@
 
     "rimraf": "*",
     "body-parser":"*",
-    "gulp":"*"
+    "gulp":"*",
+
+    "json-loader": "*",
+    "transform-loader": "*"
   }
 }

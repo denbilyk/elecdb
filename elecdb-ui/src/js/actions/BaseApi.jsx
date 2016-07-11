@@ -1,5 +1,6 @@
 import request from "superagent";
 import AppDispatcher from "../actions/AppDispatcher.jsx";
+import AuthStore from "../store/AuthStore";
 
 
 var SERVER_HOST = getHostUrl();
@@ -68,6 +69,7 @@ export default class BaseApi {
     static get(url, timeout) {
         return request
             .get(url)
+            .set('Authorization', 'Bearer ' + AuthStore.getJwt())
             .timeout(timeout || TIMEOUT);
     }
 

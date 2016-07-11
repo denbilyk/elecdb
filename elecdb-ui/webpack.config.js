@@ -91,6 +91,19 @@ module.exports = {
             {
                 test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: "file-loader"
+            },
+            {
+                test: /node_modules[\\\/]auth0-lock[\\\/].*\.js$/,
+                loaders: [
+                    'transform-loader/cacheable?brfs',
+                    'transform-loader/cacheable?packageify'
+                ]
+            }, {
+                test: /node_modules[\\\/]auth0-lock[\\\/].*\.ejs$/,
+                loader: 'transform-loader/cacheable?ejsify'
+            }, {
+                test: /\.json$/,
+                loader: 'json-loader'
             }
         ]
     },
@@ -112,15 +125,7 @@ module.exports = {
                 API_URL_CFG: JSON.stringify(args.host + "/" + args.name),
                 TIMEOUT_CFG: args.timeout
             }
-        ),
-        /*
-         new webpack.optimize.DedupePlugin(),
-         new webpack.optimize.UglifyJsPlugin({
-         compress: {
-         warnings: false
-         }
-         })
-         */
+        )
     ],
 
     devServer: {
